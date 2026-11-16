@@ -1,0 +1,115 @@
+---
+title: "Laboration 1"
+author: "Andrew Dean & Ekaterina Kershinskaia"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_caption: yes
+    theme: darkly
+    highlight: zenburn
+    css: ../styles.css
+  pdf_document: default
+---
+
+# Sammanfattning
+I detta inledande stycke ska du förklara vad labben går ut på, utan att gå in
+på detaljer.
+
+# Uppgift 2
+### 2.1
+
+```{r}
+a <- 26
+
+set.seed(19690420)
+
+n1 <- rnorm(20, a, a)
+n2 <- rnorm(80, a, a)
+n3 <- rnorm(320, a, a)
+
+
+lower <- (1 - sqrt(3))*a
+upper <- (1 + sqrt(3))*a
+
+u1 <- runif(20, lower, upper)
+u2 <- runif(80, lower, upper)
+u3 <- runif(320, lower, upper)
+
+
+t1 <- (a/sqrt(2))*rt(20, 4) + a
+t2 <- (a/sqrt(2))*rt(80, 4) + a
+t3 <- (a/sqrt(2))*rt(320, 4) + a
+
+plot_numbers <- function(d1, d2, d3) {
+  old_par <- par(mfrow = c(2,3),  # 2 rader, 3 kolonner
+                 bg = "#1e1e1e", fg = "#e0e0e0", col.axis = "#e0e0e0",
+                 col.lab = "#e0e0e0", col.main = "#e0e0e0")
+  hist(d1)
+  hist(d2)
+  hist(d3)
+  qqnorm(d1)
+  qqline(d1)
+  qqnorm(d2)
+  qqline(d2)
+  qqnorm(d3)
+  qqline(d3)
+  par(old_par) # säg åt R att sluta förvänta sig fler plottar till samma fönster
+  
+  par(bg = "#1e1e1e", fg = "#e0e0e0",
+      col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+  boxplot(d1, d2, d3, 
+          col    = c("#4fc3f7", "#81c784", "#ffb74d"),  
+          border = "#e0e0e0",                           
+          medcol = "#ffffff",                           
+          outcol = "#e0e0e0")
+}
+
+plot_numbers(n1, n2, n3)
+plot_numbers(t1, t2, t3)
+plot_numbers(u1, u2, u3)
+
+```
+
+# Uppgift 3
+
+```{r}
+data <- read.csv("olvinsprit.csv", header = TRUE)
+
+land <- data$Land
+beer <- data$beer
+vin <- data$vin
+sprit <- data$sprit
+
+
+par(bg = "#1e1e1e", fg = "#e0e0e0",
+    col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+
+plot(beer, vin)
+text(beer, vin, land)
+
+par(bg = "#1e1e1e", fg = "#e0e0e0",
+    col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+
+plot(beer, sprit)
+text(beer, sprit, land)
+
+par(bg = "#1e1e1e", fg = "#e0e0e0",
+    col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+
+plot(sprit, vin)
+text(sprit, vin, land)
+```
+
+```{r}
+plot_numbers(beer, vin, sprit)
+```
+
+```{r}
+par(bg = "#1e1e1e", fg = "#e0e0e0",
+    col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+
+stripchart(beer, vertical=TRUE)
+text(1, beer, labels=land, 
+     pos = rep(c(2, 4), length.out = length(beer)),   # 2 = left, 4 = right
+     cex = 0.6, col = "#e0e0e0")
+```
