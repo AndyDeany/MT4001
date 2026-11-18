@@ -47,10 +47,10 @@ n1 <- rnorm(20, a, a)
 n2 <- rnorm(80, a, a)
 n3 <- rnorm(320, a, a)
 ```
-```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $N(%d, %d^2)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $N(%d, %d^2)$ med n=%d, n=%d, n=%d respektiv observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_hist_qq(n1, n2, n3)
 ```
-```{r, fig.cap = sprintf("Boxplot av $N(%d, %d^2)$ med n=20, n=80, respektiv n=320 observationer.", a, a)}
+```{r, fig.cap = sprintf("Boxplot av $N(%d, %d^2)$ med n=%d, n=%d, n=%d respektiv observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_box(n1, n2, n3)
 ```
 ```{r}
@@ -59,10 +59,10 @@ t1 <- (a/sqrt(2))*rt(20, 4) + a
 t2 <- (a/sqrt(2))*rt(80, 4) + a
 t3 <- (a/sqrt(2))*rt(320, 4) + a
 ```
-```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, n=%d respektiv observationer.", a, a, length(t1), length(t2), length(t3))}
 plot_hist_qq(t1, t2, t3)
 ```
-```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, n=%d respektiv observationer.", a, a, length(t1), length(t2), length(t3))}
 plot_box(t1, t2, t3)
 ```
 ```{r}
@@ -73,10 +73,10 @@ u1 <- runif(20, lower, upper)
 u2 <- runif(80, lower, upper)
 u3 <- runif(320, lower, upper)
 ```
-```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $U(%.2f, %.2f)$ med n=20, n=80, respektiv n=320 observationer.", lower, upper)}
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $U(%.2f, %.2f)$ med n=%d, n=%d, n=%d respektiv observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_hist_qq(u1, u2, u3)
 ```
-```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=20, n=80, respektiv n=320 observationer.", lower, upper)}
+```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=%d, n=%d, n=%d respektiv observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_box(u1, u2, u3)
 ```
 
