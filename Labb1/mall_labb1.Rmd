@@ -7,67 +7,78 @@ output:
     fig_caption: yes
     theme: darkly
     highlight: zenburn
-    css: ../styles.css
   pdf_document: default
 ---
 
 # Sammanfattning
-I detta inledande stycke ska du förklara vad labben går ut på, utan att gå in
-på detaljer.
+Den här laborationen handlar om att använder diagram för att visualisera
+datamängder.
 
 # Uppgift 2
+I denna uppgift vill vi undersöka förbrukning av olika plottar för att avgöra
+om en datamängd är normalfördelad eller inte.
+
 ### 2.1
-
 ```{r}
-a <- 26
-
-set.seed(19690420)
-
-n1 <- rnorm(20, a, a)
-n2 <- rnorm(80, a, a)
-n3 <- rnorm(320, a, a)
-
-
-lower <- (1 - sqrt(3))*a
-upper <- (1 + sqrt(3))*a
-
-u1 <- runif(20, lower, upper)
-u2 <- runif(80, lower, upper)
-u3 <- runif(320, lower, upper)
-
-
-t1 <- (a/sqrt(2))*rt(20, 4) + a
-t2 <- (a/sqrt(2))*rt(80, 4) + a
-t3 <- (a/sqrt(2))*rt(320, 4) + a
-
-plot_numbers <- function(d1, d2, d3) {
-  old_par <- par(mfrow = c(2,3),  # 2 rader, 3 kolonner
-                 bg = "#1e1e1e", fg = "#e0e0e0", col.axis = "#e0e0e0",
-                 col.lab = "#e0e0e0", col.main = "#e0e0e0")
-  hist(d1)
-  hist(d2)
-  hist(d3)
-  qqnorm(d1)
-  qqline(d1)
-  qqnorm(d2)
-  qqline(d2)
-  qqnorm(d3)
-  qqline(d3)
+plot_hist_qq <- function(d1, d2, d3) {
+  old_par <- par(mfcol = c(2,3),  # 2 rader, 3 kolonner
+                 bg = "#1e1e1e", fg = "#e0e0e0",
+                 col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
+  for (d in list(d1, d2, d3)) {
+    hist(d, main = sprintf("Histogram, n=%d", length(d)),
+         xlab = "Värde", ylab = "Frekvens")
+    qqnorm(d, main = sprintf("Q-Q plot, n=%d", length(d)),
+           xlab = "Teoretiska Kvantiler", ylab = "Stickprovskvantiler")
+    qqline(d)
+  }
   par(old_par) # säg åt R att sluta förvänta sig fler plottar till samma fönster
-  
+}
+plot_box <- function(d1, d2, d3) {
   par(bg = "#1e1e1e", fg = "#e0e0e0",
       col.axis = "#e0e0e0", col.lab = "#e0e0e0", col.main = "#e0e0e0")
   boxplot(d1, d2, d3, 
-          col    = c("#4fc3f7", "#81c784", "#ffb74d"),  
-          border = "#e0e0e0",                           
-          medcol = "#ffffff",                           
-          outcol = "#e0e0e0")
+          col = c("#4fc3f7", "#81c784", "#ffb74d"),  
+          border = "#e0e0e0", medcol = "#ffffff", outcol = "#e0e0e0")
 }
-
-plot_numbers(n1, n2, n3)
-plot_numbers(t1, t2, t3)
-plot_numbers(u1, u2, u3)
-
+```
+```{r}
+set.seed(19690420)
+a <- 26
+```
+```{r}
+n1 <- rnorm(20, a, a)
+n2 <- rnorm(80, a, a)
+n3 <- rnorm(320, a, a)
+```
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $N(%d, %d^2)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+plot_hist_qq(n1, n2, n3)
+```
+```{r, fig.cap = sprintf("Boxplot av $N(%d, %d^2)$ med n=20, n=80, respektiv n=320 observationer.", a, a)}
+plot_box(n1, n2, n3)
+```
+```{r}
+t1 <- (a/sqrt(2))*rt(20, 4) + a
+t2 <- (a/sqrt(2))*rt(80, 4) + a
+t3 <- (a/sqrt(2))*rt(320, 4) + a
+```
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+plot_hist_qq(t1, t2, t3)
+```
+```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=20, n=80, n=320 respektiv observationer.", a, a)}
+plot_box(t1, t2, t3)
+```
+```{r}
+lower <- (1 - sqrt(3))*a
+upper <- (1 + sqrt(3))*a
+u1 <- runif(20, lower, upper)
+u2 <- runif(80, lower, upper)
+u3 <- runif(320, lower, upper)
+```
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $U(%.2f, %.2f)$ med n=20, n=80, respektiv n=320 observationer.", lower, upper)}
+plot_hist_qq(u1, u2, u3)
+```
+```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=20, n=80, respektiv n=320 observationer.", lower, upper)}
+plot_box(u1, u2, u3)
 ```
 
 # Uppgift 3
@@ -101,7 +112,8 @@ text(sprit, vin, land)
 ```
 
 ```{r}
-plot_numbers(beer, vin, sprit)
+plot_hist_qq(beer, vin, sprit)
+plot_box(beer, vin, sprit)
 ```
 
 ```{r}
