@@ -210,9 +210,9 @@ median(sprit)
 data[data$Land == "Sverige", ]
 ```
 
-Bubbeldiagrammet ger en ytterligare bild av konsumtionsmönstren genom att även inkludera vinkonsumtionen. Cirklarnas storlek och transparens representerar vinkonsumtionen, vilket gör det möjligt att jämföra alla tre variabler samtidigt. Diagrammet förstärker bilden av att länderna har olika konsumtionsmönster och att hög konsumtion av en viss alkoholtyp inte nödvändigtvis sammanfaller med hög konsumtion av de andra. Det är dock svårt att urskilja ett tydligt generellt samband mellan variablerna.
+Bubbeldiagrammet ger en ytterligare bild av konsumtionsmönstren genom att även inkludera vinkonsumtionen (Figur 14). Cirklarnas storlek och transparens representerar vinkonsumtionen, vilket gör det möjligt att jämföra alla tre variabler samtidigt. Diagrammet förstärker bilden av att länderna har olika konsumtionsmönster och att hög konsumtion av en viss alkoholtyp inte nödvändigtvis sammanfaller med hög konsumtion av de andra. 
 
-```{r}
+```{r, fig.cap="Bubbeldiagram över alkoholkonsumtion i OECD-länderna."}
 library(ggplot2)
 library(ggrepel)
 ggplot(data, aes(x = beer, y = sprit,
