@@ -46,6 +46,7 @@ plot_box <- function(d1, d2, d3) {
 ```{r}
 a <- 26
 ```
+\newpage
 ```{r}
 set.seed(19690420)
 n1 <- rnorm(20, a, a)
@@ -55,9 +56,11 @@ n3 <- rnorm(320, a, a)
 ```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $N(%d, %d^2)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_hist_qq(n1, n2, n3)
 ```
+\newpage
 ```{r, fig.cap = sprintf("Boxplot av $N(%d, %d^2)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_box(n1, n2, n3)
 ```
+\newpage
 ```{r}
 set.seed(19980226)
 t1 <- (a/sqrt(2))*rt(20, 4) + a
@@ -67,9 +70,11 @@ t3 <- (a/sqrt(2))*rt(320, 4) + a
 ```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
 plot_hist_qq(t1, t2, t3)
 ```
+\newpage
 ```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
 plot_box(t1, t2, t3)
 ```
+\newpage
 ```{r}
 set.seed(19981207)
 lower <- (1 - sqrt(3))*a
@@ -81,9 +86,11 @@ u3 <- runif(320, lower, upper)
 ```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $U(%.2f, %.2f)$ med n=%d, n=%d, respektiv n=%d observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_hist_qq(u1, u2, u3)
 ```
+\newpage
 ```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=%d, n=%d, respektiv n=%d observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_box(u1, u2, u3)
 ```
+\newpage
 
 ### 2.2.
 Jag tycker att Q-Q plotten visar tydligast att en normalfördelning eller
@@ -105,6 +112,8 @@ normal vid n=20, men definitivt vid n=80.
 Q-Q plotten kan också användas för att avgöra om en likformig fördelning är
 normal eller inte. Det behöver dock lite större n; vid n=80 (se Figur 3) blir
 det ganska klart att den är S-formig och således inte är normal.
+
+\newpage
 
 
 # Uppgift 3
