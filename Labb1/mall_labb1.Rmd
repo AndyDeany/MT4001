@@ -34,8 +34,13 @@ plot_hist_qq <- function(d1, d2, d3) {
   }
   par(old_par) # säg åt R att sluta förvänta sig fler plottar till samma fönster
 }
+
 plot_box <- function(d1, d2, d3) {
-  boxplot(d1, d2, d3, col = c("#4fc3f7", "#81c784", "#ffb74d"))
+  boxplot(d1, d2, d3,
+          names = c(sprintf("n=%d", length(d1)), sprintf("n=%d", length(d2)), sprintf("n=%d", length(d3))),
+          main = "Boxplottar av olika antal observationer",
+          xlab = "Stickprovsstorlek", ylab = "Värde",
+          col = c("#4fc3f7", "#81c784", "#ffb74d"))
 }
 ```
 ```{r}
