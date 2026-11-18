@@ -3,12 +3,12 @@ title: "Laboration 1"
 author: "Andrew Dean & Ekaterina Kershinskaia"
 date: "`r Sys.Date()`"
 output:
+  pdf_document: default
   html_document:
     fig_caption: yes
     theme: darkly
     highlight: zenburn
     css: ../styles.css
-  pdf_document: default
 ---
 \renewcommand{\figurename}{Figur}
 \renewcommand{\tablename}{Tabell}
