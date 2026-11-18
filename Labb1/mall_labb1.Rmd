@@ -98,13 +98,14 @@ från linjen mot slutet.
 
 När det kommer till likformigfördelningen, tycker jag att ett histogram visar
 tydligast att den är likformig. Även vid n=20 ser likformigfördelnings histogram
-ganska "platt" ut, medans de andra två fördelningarna har en spetsigare form.
-Alltså ser man förmodligen att den inte är normal vid n=20, men definitivt vid
-n=80.
+ganska "platt" ut (se Figur 3), medans de andra två fördelningarna har en
+spetsigare form (se Figurer 1 och 2). Alltså ser man förmodligen att den inte är
+normal vid n=20, men definitivt vid n=80.
 
 Q-Q plotten kan också användas för att avgöra om en likformig fördelning är
-normal eller inte. Det behöver dock lite större n; vid n=80 blir det ganska
-klart att den är S-formig och således inte är normal.
+normal eller inte. Det behöver dock lite större n; vid n=80 (se Figur 3) blir
+det ganska klart att den är S-formig och således inte är normal.
+
 
 # Uppgift 3
 
