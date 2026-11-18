@@ -21,7 +21,7 @@ datamängder.
 I denna uppgift vill vi undersöka förbrukning av olika plottar för att avgöra
 om en datamängd är normalfördelad eller inte.
 
-### 2.1
+### 2.1.
 ```{r}
 plot_hist_qq <- function(d1, d2, d3) {
   old_par <- par(mfcol = c(2,3))  # 2 rader, 3 kolonner
@@ -80,9 +80,26 @@ plot_hist_qq(u1, u2, u3)
 plot_box(u1, u2, u3)
 ```
 
-### 2.2
-Jag tycker att Q-Q plotten visar tydligast att en normalfördelning faktiskt
-är normal, dock den behöver ganska stort n för att avgöra. I ex
+### 2.2.
+Jag tycker att Q-Q plotten visar tydligast att en normalfördelning eller
+en t-fördelning faktiskt är den fördelningen den är.
+Den behöver dock ganska stort n för att avgöra.
+I exemplen ovan, det är svårt att särskilja normalfördelning (se Figur 1)
+och t-fördelningen (se Figur 2) då n=80.
+
+När n=320 är situation tydligare. I princip ligger alla punkter på linjen
+för normalfördelningen, medans t-fördelningens punkter börjar vrida bort
+från linjen mot slutet.
+
+När det kommer till likformigfördelningen, tycker jag att ett histogram visar
+tydligast att den är likformig. Även vid n=20 ser likformigfördelnings histogram
+ganska "platt" ut, medans de andra två fördelningarna har en spetsigare form.
+Alltså ser man förmodligen att den inte är normal vid n=20, men definitivt vid
+n=80.
+
+Q-Q plotten kan också användas för att avgöra om en likformig fördelning är
+normal eller inte. Det behöver dock lite större n; vid n=80 blir det ganska
+klart att den är S-formig och således inte är normal.
 
 # Uppgift 3
 
