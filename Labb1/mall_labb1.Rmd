@@ -14,14 +14,26 @@ output:
 \renewcommand{\tablename}{Tabell}
 
 # Sammanfattning
-Den här laborationen handlar om att använder diagram för att visualisera
-datamängder.
+I denna laboration undersöks hur statistiska diagram kan användas för att beskriva data och bedöma om ett stickprov kan antas vara normalfördelat. Först analyseras simulerade data från normalfördelningen, den likformiga fördelningen och t-fördelningen med olika stickprovsstorlekar. Därefter genomförs en explorativ analys av alkoholkonsumtion i OECD-länder, där konsumtionen av öl, vin och sprit undersöks med hjälp av histogram, Q-Q-plottar och spridningsdiagram.
 
 # Uppgift 2
-I denna uppgift vill vi undersöka förbrukning av olika plottar för att avgöra
-om en datamängd är normalfördelad eller inte.
 
-### 2.1.
+För att undersöka hur olika fördelningar kan identifieras grafiskt simuleras data från tre olika fördelningar: normalfördelningen, den likformiga fördelningen och t-fördelningen med fyra frihetsgrader. För varje fördelning genereras stickprov med storlekarna \(n=20\), \(n=80\) och \(n=320\). Samtliga fördelningar konstrueras så att de har väntevärde och standardavvikelse lika med \(a=7\).
+
+### Normalfördelad data
+
+Först simuleras data från en normalfördelning, tre stickprov genereras med olika stickprovsstorlekar för att undersöka hur fördelningens utseende förändras när antalet observationer ökar.
+
+```{r}
+a <- 7 
+set.seed(19980226) 
+n1 <- rnorm(20, a, a)
+n2 <- rnorm(80, a, a)
+n3 <- rnorm(320, a, a)
+print(n1)
+```
+
+För att visualisera de simulerade normalfördelade stickproven används histogram, Q-Q-plottar och boxplottar. Histogrammen ger en överblick över fördelningens form, medan Q-Q-plottarna gör det möjligt att jämföra observationerna med en teoretisk normalfördelning. I figur 1 är det möjligt att bedöma normaliteten redan vid \(n=80\) med hjälp av Q-Q-plotten, där observationerna ligger relativt nära den räta linjen. För histogrammet är det svårare att dra en slutsats vid små stickprovsstorlekar, eftersom slumpvariation gör formen otydlig. Vid \(n=320\) framträder den klockformade strukturen tydligt. Boxplottarna i Figur 2 ger däremot begränsad information om fördelningarnas form och normalitet. De är främst användbara för att jämföra stickprovens median och spridning samt för att identifiera eventuella extremvärden.
 
 ```{r}
 plot_hist_qq <- function(d1, d2, d3) {
@@ -38,99 +50,71 @@ plot_hist_qq <- function(d1, d2, d3) {
 
 plot_box <- function(d1, d2, d3) {
   boxplot(d1, d2, d3,
-          names = c(sprintf("n=%d", length(d1)), sprintf("n=%d", length(d2)), sprintf("n=%d", length(d3))),
+          names = c(sprintf("n=%d", length(d1)), 
+                    sprintf("n=%d", length(d2)), sprintf("n=%d", length(d3))),
           main = "Boxplottar av olika antal observationer",
           xlab = "Stickprovsstorlek", ylab = "Värde",
           col = c("#4fc3f7", "#81c784", "#ffb74d"))
 }
 ```
 
-```{r}
-a <- 26
-```
-
-\newpage
-
-```{r}
-set.seed(19690420)
-n1 <- rnorm(20, a, a)
-n2 <- rnorm(80, a, a)
-n3 <- rnorm(320, a, a)
-```
 
 ```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $N(%d, %d^2)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_hist_qq(n1, n2, n3)
 ```
 
-\newpage
 
 ```{r, fig.cap = sprintf("Boxplot av $N(%d, %d^2)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(n1), length(n2), length(n3))}
 plot_box(n1, n2, n3)
 ```
 
-\newpage
+### Likformigt fördelad data
+
+Därefter simuleras data från en likformig fördelning, tre stickprov genereras och visualiseras med hjälp av samma diagram. För att fördelningen ska ha väntevärde och standardavvikelse lika med \(a=7\) väljs den undre och övre gränsen enligt \(a(1-\sqrt{3})\) respektive \(a(1+\sqrt{3})\). 
 
 ```{r}
-set.seed(19980226)
-t1 <- (a/sqrt(2))*rt(20, 4) + a
-t2 <- (a/sqrt(2))*rt(80, 4) + a
-t3 <- (a/sqrt(2))*rt(320, 4) + a
-```
-
-```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
-plot_hist_qq(t1, t2, t3)
-```
-
-\newpage
-
-```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
-plot_box(t1, t2, t3)
-```
-
-\newpage
-
-```{r}
-set.seed(19981207)
-lower <- (1 - sqrt(3))*a
-upper <- (1 + sqrt(3))*a
+lower <- a*(1 - sqrt(3)) # lägre gräns för den likformiga fördelningen
+upper <- a*(1 + sqrt(3)) # övre gräns för den likformiga fördelningen
+set.seed(19980226) 
 u1 <- runif(20, lower, upper)
 u2 <- runif(80, lower, upper)
 u3 <- runif(320, lower, upper)
 ```
 
+I Figur 3 framträder den likformiga fördelningens form tydligare vid $n = 320$, där observationerna är relativt jämnt fördelade över intervallet. Vid mindre stickprovsstorlekar är fördelningens form svårare att urskilja på grund av slumpvariation. Q-Q-plottarna visar tydliga avvikelser från den räta linjen, särskilt vid större stickprovsstorlekar, vilket tyder på att stickproven inte är normalfördelade. Boxplottarna i Figur 4 visar att observationerna är mer jämnt fördelade över ett bredare intervall jämfört med den normalfördelade datan. Boxplottarna visar dock inte lika tydligt den likformiga fördelningens karakteristiska form som histogrammen.
+
 ```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $U(%.2f, %.2f)$ med n=%d, n=%d, respektiv n=%d observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_hist_qq(u1, u2, u3)
 ```
-
-\newpage
 
 ```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=%d, n=%d, respektiv n=%d observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_box(u1, u2, u3)
 ```
 
-### 2.2.
-Jag tycker att Q-Q plotten visar tydligast att en normalfördelning eller
-en t-fördelning faktiskt är den fördelningen den är.
-Den behöver dock ganska stort n för att avgöra.
-I exemplen ovan, det är svårt att särskilja normalfördelning (se Figur 1)
-och t-fördelningen (se Figur 3) då n=80.
+### t-fördelad data
 
-När n=320 är situation tydligare. I princip ligger alla punkter på linjen
-för normalfördelningen, medans t-fördelningens punkter börjar vrida bort
-från linjen mot slutet.
+Slutligen simuleras data från en t-fördelning med fyra frihetsgrader. Eftersom en t-fördelning med fyra frihetsgrader har väntevärde 0 och varians 2 transformeras de simulerade observationerna genom multiplikation med \(a/\sqrt{2}\) och addition av \(a\). På så sätt får den transformerade variabeln väntevärde och standardavvikelse lika med \(a=7\).
 
-När det kommer till likformigfördelningen, tycker jag att ett histogram visar
-tydligast att den är likformig. Även vid n=20 ser likformigfördelnings histogram
-ganska "platt" ut (se Figur 5), medans de andra två fördelningarna har en
-spetsigare form (se Figurer 1 och 3). Alltså ser man förmodligen att den inte är
-normal vid n=20, men definitivt vid n=80.
+```{r}
+set.seed(19980226) 
+t1 <- a/sqrt(2)*rt(20, 4) + a 
+t2 <- a/sqrt(2)*rt(80, 4) + a
+t3 <- a/sqrt(2)*rt(320, 4) + a
+```
 
-Q-Q plotten kan också användas för att avgöra om en likformig fördelning är
-normal eller inte. Det behöver dock lite större n; vid n=80 (se Figur 5) blir
-det ganska klart att den är S-formig och således inte är normal.
+I Figur 5 är histogrammen relativt klockformade, men fördelningen har större spridning och är mindre koncentrerad kring medelvärdet jämfört med den normalfördelade datan, särskilt vid större stickprovsstorlekar. Q-Q-plottarna visar däremot avvikelser från den räta linjen, framför allt i svansarna, vilket överensstämmer med t-fördelningens karakteristiska form med tyngre svansar. Boxplottarna i Figur 6 visar också en större spridning och förekomsten av eventuella extrema observationer jämfört med den normalfördelade datan.
+
+```{r, fig.cap = sprintf("Histogram och Q-Q plottar från $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
+plot_hist_qq(t1, t2, t3)
+```
+
+```{r, fig.cap = sprintf("Boxplot av $\\left(\\frac{%d}{\\sqrt{2}}t_4 + %d\\right)$ med n=%d, n=%d, respektiv n=%d observationer.", a, a, length(t1), length(t2), length(t3))}
+plot_box(t1, t2, t3)
+```
+
+Sammanfattningsvis visar simuleringarna att möjligheten att bedöma en fördelnings form beror både på vilken diagramtyp som används och på stickprovsstorleken. Histogrammen avslöjar fördelningens form vid större stickprovsstorlekar, medan Q-Q-plottarna är särskilt användbara för att upptäcka avvikelser från normalfördelning. För den normalfördelade datan ligger observationerna relativt nära den räta linjen i Q-Q-plottarna, medan de andra fördelningarna uppvisar tydliga avvikelser. T-fördelningen liknar normalfördelningen, men dess tyngre svansar blir tydligare i Q-Q-plottarna vid större stickprovsstorlekar. Boxplottarna ger en bra överblick över median och spridning samt kan visa eventuella extrema observationer, men är mindre användbara för att identifiera fördelningarnas specifika form. Sammantaget framstår Q-Q-plottarna som det mest användbara diagrammet för att bedöma normalitet, särskilt när stickprovsstorleken är tillräckligt stor.
 
 \newpage
-
 
 # Uppgift 3
 
@@ -141,25 +125,113 @@ land <- data$Land
 beer <- data$beer
 vin <- data$vin
 sprit <- data$sprit
-
-plot(beer, vin)
-text(beer, vin, land)
-
-plot(beer, sprit)
-text(beer, sprit, land)
-
-plot(sprit, vin)
-text(sprit, vin, land)
 ```
+
+### Spridningsdiagram 
+
+Spridningsdiagrammen (Figur 7-9) visar att det inte finns något tydligt generellt samband mellan konsumtionen av de olika alkoholtyperna. Vissa länder som utmärker sig genom extremt hög konsumtion av en alkoholtyp har samtidigt relativt låg konsumtion av andra. Italien har exempelvis mycket hög vinkonsumtion, medan Irland utmärker sig genom hög ölkonsumtion. Samtidigt finns det länder, såsom Frankrike, Tyskland och Österrike, som har relativt hög konsumtion inom två eller flera kategorier. Detta tyder på att konsumtionsmönstren varierar mellan länder och att hög konsumtion av en viss alkoholtyp inte nödvändigtvis innebär låg eller hög konsumtion av de andra. Sammantaget går det därför inte att urskilja ett entydigt samband mellan variablerna utifrån spridningsdiagrammen.
+
+```{r, fig.cap="Spridningsdiagram över öl- och vinkonsumtion"}
+plot(beer, vin,
+     xlab = "Öl",
+     ylab = "Vin",
+     main = "Öl- och vinkonsumtion")
+
+text(beer, vin, labels = land, pos = 3, offset = 0.1, cex = 0.6)
+```
+
+```{r, fig.cap="Spridningsdiagram över öl- och spritkonsumtion"}
+plot(beer, sprit,
+     xlab = "Öl",
+     ylab = "Sprit",
+     main = "Öl- och spritkonsumtion")
+
+text(beer, sprit, labels = land, pos = 3, offset = 0.1, cex = 0.6)
+```
+
+```{r, fig.cap="Spridningsdiagram över sprit- och vinkonsumtion"}
+plot(sprit, vin,
+     xlab = "Sprit",
+     ylab = "Vin",
+     main = "Sprit- och vinkonsumtion")
+
+text(sprit, vin, labels = land, pos = 3, offset = 0.1, cex = 0.6)
+```
+
+### Variablernas fördelningar
+
+För att undersöka variablernas fördelningar och bedöma om de kan antas vara normalfördelade används histogram och Q-Q-plottar. Ölkonsumtionen ser relativt symmetrisk ut och observationerna ligger förhållandevis nära den räta linjen i Q-Q-plotten (Figur 10). Vinkonsumtionen uppvisar vissa avvikelser, medan spritkonsumtionen verkar avvika mer från normalfördelningen (Figur 11-12). Samtidigt är antalet observationer litet \(n = 18\), vilket gör det svårt att med säkerhet bedöma om variablerna är normalfördelade. 
 
 ```{r}
-plot_hist_qq(beer, vin, sprit)
-plot_box(beer, vin, sprit)
+plot_hist_qq <- function(data, name, color) {
+  par(mfrow = c(1, 2))
+
+  hist(data,
+       main = paste(name, "konsumtion"),
+       xlab = "Konsumtion",
+       ylab = "Frekvens",
+       col = color,
+       breaks = 8)
+
+  qqnorm(data, main = paste("Q-Q-plot:", name), xlab = "Teoretiska Kvantiler")
+  qqline(data)
+
+  par(mfrow = c(1, 1))
+}
 ```
 
-```{r}
-stripchart(beer, vertical=TRUE)
-text(1, beer, labels=land, 
-     pos = rep(c(2, 4), length.out = length(beer)),   # 2 = left, 4 = right
-     cex = 0.6)
+```{r, fig.cap="Histogram och Q-Q-plot för ölkonsumtionen i OECD-länderna."}
+plot_hist_qq(beer, "Öl", "yellow")
 ```
+
+```{r, fig.cap="Histogram och Q-Q-plot för vinkonsumtionen i OECD-länderna."}
+plot_hist_qq(vin, "Vin", "firebrick")
+```
+
+```{r, fig.cap="Histogram och Q-Q-plot för spritkonsumtionen i OECD-länderna."}
+plot_hist_qq(sprit, "Sprit", "lightblue")
+```
+
+Boxplottarna gör det möjligt att jämföra konsumtionsnivåerna och identifiera länder som skiljer sig från övriga (Figur 13). Sverige ligger relativt lågt i samtliga tre variabler. Ölkonsumtionen i Sverige är lägre än medianen, och även vin- och spritkonsumtionen ligger relativt lågt jämfört med de andra länderna. Sverige kan därför inte betraktas som ett extremt land med hög alkoholkonsumtion i någon av de tre kategorierna.
+
+```{r, fig.cap="Boxplottar av öl-, vin- och spritkonsumtionen i OECD-länderna."}
+boxplot(beer, vin, sprit,
+        names = c("Öl", "Vin", "Sprit"),
+        col = c("yellow", "firebrick", "lightblue"),
+        ylab = "Konsumtion",
+        main = "Alkoholkonsumtion")
+
+# Medianer
+median(beer)
+median(vin)
+median(sprit)
+
+# Sverige
+data[data$Land == "Sverige", ]
+```
+
+Bubbeldiagrammet ger en ytterligare bild av konsumtionsmönstren genom att även inkludera vinkonsumtionen. Cirklarnas storlek och transparens representerar vinkonsumtionen, vilket gör det möjligt att jämföra alla tre variabler samtidigt. Diagrammet förstärker bilden av att länderna har olika konsumtionsmönster och att hög konsumtion av en viss alkoholtyp inte nödvändigtvis sammanfaller med hög konsumtion av de andra. Det är dock svårt att urskilja ett tydligt generellt samband mellan variablerna.
+
+```{r}
+library(ggplot2)
+library(ggrepel)
+ggplot(data, aes(x = beer, y = sprit,
+                 size = vin,
+                 alpha = vin)) +
+  geom_point(color = "firebrick") +
+  geom_text_repel(aes(label = Land),
+                  size = 3,
+                  fontface = "bold",
+                  show.legend = FALSE) +
+  scale_alpha(range = c(0.5, 0.95)) +
+  scale_size(range = c(2, 15)) +
+  labs(
+    x = "Beer",
+    y = "Sprit",
+    size = "Vin",
+    alpha = "Vin"
+  ) +
+  theme_minimal()
+```
+
+Sammanfattningsvis visar analysen att alkoholkonsumtionen skiljer sig tydligt mellan länder och mellan olika typer av alkohol. Ölkonsumtionen uppvisar den fördelning som ligger närmast normalfördelningen, medan spritkonsumtionen har tydliga avvikelser. Sverige ligger relativt lågt i jämförelse med övriga länder, medan exempelvis Irland, Italien och Japan utmärker sig inom olika konsumtionskategorier. Spridningsdiagrammen visar inte några tydliga starka samband mellan konsumtionen av öl, vin och sprit. Resultaten tyder därmed på att konsumtionsmönstren varierar mellan länder.
