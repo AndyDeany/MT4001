@@ -90,7 +90,6 @@ plot_hist_qq(u1, u2, u3)
 ```{r, fig.cap = sprintf("Boxplot av $U(%.2f, %.2f)$ med n=%d, n=%d, respektiv n=%d observationer.", lower, upper, length(u1), length(u2), length(u3))}
 plot_box(u1, u2, u3)
 ```
-\newpage
 
 ### 2.2.
 Jag tycker att Q-Q plotten visar tydligast att en normalfördelning eller
